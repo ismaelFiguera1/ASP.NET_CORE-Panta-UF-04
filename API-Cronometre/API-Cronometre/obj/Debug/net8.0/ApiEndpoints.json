@@ -1,5 +1,67 @@
 [
   {
+    "ContainingType": "API_Cronometre.Controllers.CronometreController",
+    "Method": "EstatPerId",
+    "RelativePath": "api/Cronometre/{id}/estat",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "API_Cronometre.Cronometre",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "API_Cronometre.Controllers.CronometreController",
+    "Method": "IniciarPorId",
+    "RelativePath": "api/Cronometre/{id}/iniciar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API_Cronometre.Controllers.CronometreController",
+    "Method": "Llistar",
+    "RelativePath": "api/Cronometre/llistar",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "API_Cronometre.Cronometre",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "API_Cronometre.Controllers.ValuesController",
     "Method": "Salutacio",
     "RelativePath": "api/Values",

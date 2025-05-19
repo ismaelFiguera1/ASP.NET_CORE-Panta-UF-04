@@ -1,4 +1,6 @@
 
+using API_Cronometre.Services;
+
 namespace API_Cronometre
 {
     public class Program
@@ -13,8 +15,12 @@ namespace API_Cronometre
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddSingleton<CronometreService>();
 
             var app = builder.Build();
+
+            
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
