@@ -6,9 +6,9 @@
         public bool Executant { get; set; }
         public string Name { get; set; }
 
-        public string TempsTranscorregut { get; set; }
+        public double TempsTranscorregut { get; set; }
 
-        public Cronometre(Guid id, bool executant, string nom, string temps) 
+        public Cronometre(Guid id, bool executant, string nom, double temps) 
         {
             this.Id = id;
             this.Executant = executant;

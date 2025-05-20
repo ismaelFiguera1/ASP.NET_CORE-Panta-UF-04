@@ -15,9 +15,9 @@ namespace API_Cronometre.Services
             Guid id3 = Guid.NewGuid();
 
 
-            cronometres.Add(new Cronometre(id1, false, "Temporitzador1", "00:00:00"));
-            cronometres.Add(new Cronometre(id2, false, "Temporitzador2", "00:00:00"));
-            cronometres.Add(new Cronometre(id3, false, "Temporitzador3", "00:00:00"));
+            cronometres.Add(new Cronometre(id1, false, "Temporitzador1", 0.0));
+            cronometres.Add(new Cronometre(id2, false, "Temporitzador2", 0.0));
+            cronometres.Add(new Cronometre(id3, false, "Temporitzador3", 0.0));
 
             Stopwatch relotge = new Stopwatch();
             Stopwatch relotge1 = new Stopwatch();
@@ -111,8 +111,7 @@ namespace API_Cronometre.Services
                         // Si el rellotge està funcionant, actualitzem el temps actual
                         if (rellotge.IsRunning)
                         {
-                            TimeSpan temps = rellotge.Elapsed;
-                            c.TempsTranscorregut = temps.ToString(@"hh\:mm\:ss");
+                            c.TempsTranscorregut = rellotge.Elapsed.TotalSeconds;
                         }
                     }
 
@@ -121,6 +120,179 @@ namespace API_Cronometre.Services
             }
 
             return null; // Si no s’ha trobat cap cronòmetre amb aquest ID
+        }
+
+
+
+
+
+        // Pausem el cronometre que tingui el id
+
+
+
+
+
+        public double? PausarCronometre(Guid id)
+        {
+            foreach (Cronometre c in cronometres)
+            {
+                if (c.Id == id)
+                {
+                    if (!valorsCronometres.ContainsKey(id))
+                    {
+                        return null; 
+                    }
+
+                    Stopwatch rellotge = valorsCronometres[id];
+
+                    if (!rellotge.IsRunning)
+                    {
+                        return null; 
+                    }
+
+                    rellotge.Stop();
+
+                    double segons = rellotge.Elapsed.TotalSeconds;
+
+                    c.TempsTranscorregut = segons; 
+
+                    c.Executant = false;
+
+
+
+                    return segons;
+                }
+            }
+
+            return null;
+        }
+
+
+
+
+
+        // Comprobem l'estat per id
+
+
+
+
+
+        public string? ObtenirEstat(Guid id)
+        {
+            foreach (Cronometre c in cronometres)
+            {
+                if (c.Id == id)
+                {
+                    if (c.Executant)
+                    {
+                        return "Started";
+                    }
+                    else
+                    {
+                        return "Paused";
+                    }
+                }
+            }
+            return null;
+        }
+
+
+
+
+
+        // Resume
+
+
+
+
+
+        public double? Resume(Guid id)
+        {
+            foreach (Cronometre c in cronometres)
+            {
+                if (c.Id == id)
+                {
+                    if (!valorsCronometres.ContainsKey(id)) return null;
+
+                    Stopwatch rellotge = valorsCronometres[id];
+
+                    if (rellotge.IsRunning) return null;
+
+                    rellotge.Start();
+
+                    c.Executant = true;
+
+                    return rellotge.Elapsed.TotalSeconds;
+                }
+            }
+
+            return null;
+        }
+
+
+
+
+
+        // Parar i esborrar per id
+
+
+
+
+
+        public double? STOPCronometre(Guid id)
+        {
+            foreach (Cronometre c in cronometres)
+            {
+                if (c.Id == id)
+                {
+                    if (!valorsCronometres.ContainsKey(id)) return null; 
+
+                    Stopwatch rellotge = valorsCronometres[id];
+
+                    if (rellotge.IsRunning)
+                    {
+                        rellotge.Stop();
+                    }
+
+                    double segons = rellotge.Elapsed.TotalSeconds;
+
+                    valorsCronometres.Remove(id);
+
+                    cronometres.Remove(c);
+
+                    return segons;
+                }
+            }
+
+            return null;
+        }
+
+
+
+
+
+        // Crear i iniciar unconometre i retornar el id
+
+
+
+
+
+        public Guid CrearINiciarCronometre()
+        {
+            Guid nouId = Guid.NewGuid();
+
+            string nom = $"Cronometre {cronometres.Count + 1}";
+
+            Cronometre nou = new Cronometre(nouId, true, nom, 0.0);
+
+            cronometres.Add(nou);
+
+            Stopwatch rellotge = new Stopwatch();
+            rellotge.Start();
+
+            valorsCronometres.Add(nouId, rellotge);
+
+            return nouId;
         }
 
     }
